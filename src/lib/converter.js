@@ -1,8 +1,11 @@
 import atomizer from '../mappings/atomizer/basic.js';
 import atomizerCustom from '../mappings/atomizer/custom.js';
 
-import tailwind from '../mappings/tailwind/pixel.js';
+import tailwindPixel from '../mappings/tailwind/pixel.js';
+import tailwindRem from '../mappings/tailwind/rem.js';
 import tailwindCustom from '../mappings/tailwind/custom.js';
+
+const tailwindBase = [...tailwindRem, ...tailwindPixel];
 
 import {
   addBreakpointPseudoClass,
@@ -178,10 +181,11 @@ function createMatchers() {
   return customMatchers;
 }
 
-function findKeyWithValue(obj, value) {
-  const item = Object.entries(obj).find(([, val]) => {
+function findKeyWithValue(list, value) {
+  const item = list.find(([, val]) => {
     return areEqualProperties(value, val);
   });
+
   return item ? item[0] : null;
 }
 
@@ -193,7 +197,7 @@ function findCustomTailwindClass(value) {
 }
 
 function findTailwindClass(properties) {
-  const twClass = findKeyWithValue(tailwind, properties);
+  const twClass = findKeyWithValue(tailwindBase, properties);
   return twClass || null;
 }
 
