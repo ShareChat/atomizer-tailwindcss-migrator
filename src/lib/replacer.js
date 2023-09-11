@@ -1,4 +1,4 @@
-import getTailwindClass from './lib/converter.js';
+import getTailwindClass from './converter.js';
 
 async function tranformFile(classes, code, mappings) {
   let classesTransformedCount = 0;
