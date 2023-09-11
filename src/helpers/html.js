@@ -3,7 +3,9 @@ import _ from 'lodash';
 function createHTMLTableRow(data, idx) {
   return `<tr>
       <td>${idx}.</td>
-      <td>${data.file}</td>
+      <td>
+        <a href="vscode://file${data.file}">${data.fileName}</a>
+      </td>
       <td>${data.atomicClassesCount}</td>
       <td>${data.classesTransformedCount}</td>
       <td>${

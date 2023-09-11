@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import path from 'path';
 import open from 'open';
 import { readFile, writeFile } from 'fs/promises';
 import { Command } from 'commander';
@@ -7,6 +8,8 @@ import tranformFile from './replacer.js';
 import { globSync } from 'glob';
 import { extractClasses } from './helpers/index.js';
 import generateHTMLReport from './helpers/html.js';
+
+const currentTime = performance.now();
 
 const program = new Command();
 
@@ -72,7 +75,8 @@ async function main(styleFilePath, filePattern) {
       await writeFile(file, code);
     }
     return {
-      file,
+      fileName: file,
+      file: path.resolve(file),
       atomicClassesCount,
       classesTransformedCount,
       transformedClasses,
@@ -97,6 +101,14 @@ async function main(styleFilePath, filePattern) {
       totalAtomicClasses,
       totalTransformedClasses
     )
+  );
+
+  const timeTaken = performance.now() - currentTime;
+
+  console.log(
+    'Total time taken: ',
+    `${timeTaken.toFixed(2)}ms`,
+    `${(timeTaken / 1000).toFixed(2)}s`
   );
 
   if (!options.open) {
