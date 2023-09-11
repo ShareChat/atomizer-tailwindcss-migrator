@@ -222,67 +222,73 @@ function createCustomTailwindClass(className, value, customMapping = {}) {
   }
 }
 
-const cache = new Map();
+const getTailwindClass = (function main() {
+  function getTailwindClassInternal(atomicClassName, mappings) {
+    let { baseClass, breakpoint, pseudoClass } =
+      breakAtomizerClass(atomicClassName);
 
-function getTailwindClass(atomicClassName, mappings) {
-  if (cache.has(atomicClassName) && cache.get(atomicClassName)) {
-    return cache.get(atomicClassName);
-  }
-  let { baseClass, breakpoint, pseudoClass } =
-    breakAtomizerClass(atomicClassName);
+    const transformer = transformers.find(({ matcher }) =>
+      baseClass.match(matcher)
+    );
 
-  const transformer = transformers.find(({ matcher }) =>
-    baseClass.match(matcher)
-  );
+    if (transformer) {
+      baseClass = transformer.transform(baseClass);
+    }
 
-  if (transformer) {
-    baseClass = transformer.transform(baseClass);
-  }
+    const specialCase = specialCases.find(({ matcher }) =>
+      baseClass.match(matcher)
+    );
 
-  const specialCase = specialCases.find(({ matcher }) =>
-    baseClass.match(matcher)
-  );
-
-  if (specialCase) {
-    const twClass = specialCase.replacement(baseClass);
-    cache.set(atomicClassName, twClass);
-    return addBreakpointPseudoClass(twClass, breakpoint, pseudoClass);
-  }
-
-  const properties = getAtomicClassProperties(baseClass);
-
-  if (properties) {
-    const twClass = findTailwindClass(properties);
-
-    if (twClass) {
-      cache.set(atomicClassName, twClass);
+    if (specialCase) {
+      const twClass = specialCase.replacement(baseClass);
       return addBreakpointPseudoClass(twClass, breakpoint, pseudoClass);
     }
-  }
 
-  const matched = findCustomAtomicClass(baseClass);
+    const properties = getAtomicClassProperties(baseClass);
 
-  if (matched) {
-    const { properties, regex } = matched;
-    const value = shortenHexColor(
-      extractValueFromCustomClass(baseClass, regex)
-    );
-    const propertiesWithValues = properties.map((property) =>
-      substituteValueToProperty(property, value)
-    );
-    let twClass = findTailwindClass(propertiesWithValues);
-    if (twClass) {
-      cache.set(atomicClassName, twClass);
+    if (properties) {
+      const twClass = findTailwindClass(properties);
+
+      if (twClass) {
+        return addBreakpointPseudoClass(twClass, breakpoint, pseudoClass);
+      }
+    }
+
+    const matched = findCustomAtomicClass(baseClass);
+
+    if (matched) {
+      const { properties, regex } = matched;
+      const value = shortenHexColor(
+        extractValueFromCustomClass(baseClass, regex)
+      );
+      const propertiesWithValues = properties.map((property) =>
+        substituteValueToProperty(property, value)
+      );
+      let twClass = findTailwindClass(propertiesWithValues);
+      if (twClass) {
+        return addBreakpointPseudoClass(twClass, breakpoint, pseudoClass);
+      }
+      twClass = findCustomTailwindClass(properties);
+      if (twClass) {
+        twClass = createCustomTailwindClass(twClass, value, mappings);
+      }
       return addBreakpointPseudoClass(twClass, breakpoint, pseudoClass);
     }
-    twClass = findCustomTailwindClass(properties);
-    if (twClass) {
-      twClass = createCustomTailwindClass(twClass, value, mappings);
-    }
-    cache.set(atomicClassName, twClass);
-    return addBreakpointPseudoClass(twClass, breakpoint, pseudoClass);
+    return null;
   }
-  return null;
-}
+
+  const cache = new Map();
+
+  function getTailwindClass(atomicClassName, mappings) {
+    if (cache.has(atomicClassName) && cache.get(atomicClassName)) {
+      return cache.get(atomicClassName);
+    }
+    const twClass = getTailwindClassInternal(atomicClassName, mappings);
+    cache.set(atomicClassName, twClass);
+    return twClass;
+  }
+
+  return getTailwindClass;
+})();
 
 export default getTailwindClass;
