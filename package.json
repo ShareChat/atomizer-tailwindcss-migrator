@@ -14,7 +14,8 @@
   "dependencies": {
     "commander": "^11.0.0",
     "glob": "^10.3.4",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "open": "^9.1.0"
   },
   "type": "module",
   "devDependencies": {

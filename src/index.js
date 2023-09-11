@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import open from 'open';
 import { readFile, writeFile } from 'fs/promises';
 import { Command } from 'commander';
 import tranformFile from './replacer.js';
@@ -21,7 +22,8 @@ program
   )
   .requiredOption('-t, --transform <globPattern>', 'files to transform')
   .option('-m, --mappings <file>', 'mappings file to use for custom variables')
-  .option('-d, --dry-run', 'dry run to see the changes');
+  .option('-d, --dry-run', 'dry run to see the changes')
+  .option('-no, --no-open', 'do not open the report file');
 
 program.parse();
 
@@ -96,6 +98,12 @@ async function main(styleFilePath, filePattern) {
       totalTransformedClasses
     )
   );
+
+  if (!options.open) {
+    return;
+  }
+
+  await open('transform-report.html');
 }
 
 main(styleFile, filePattern);
