@@ -4,7 +4,7 @@ import path from 'path';
 import open from 'open';
 import { readFile, writeFile } from 'fs/promises';
 import { Command } from 'commander';
-import tranformFile from './replacer.js';
+import tranformFile from './lib/replacer.js';
 import { globSync } from 'glob';
 import { extractClasses } from './helpers/index.js';
 import generateHTMLReport from './helpers/html.js';
