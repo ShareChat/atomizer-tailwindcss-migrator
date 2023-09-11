@@ -31,12 +31,12 @@ const specialCases = [
   },
   {
     matcher: /Translate\((.*), ?(.*)\)/,
-    replacement(className) {
+    replacement(className, mappings) {
       const match = className.match(this.matcher);
       const x = match[1];
       const y = match[2];
-      const twClassX = getTailwindClass(`TranslateX(${x})`);
-      const twClassY = getTailwindClass(`TranslateY(${y})`);
+      const twClassX = getTailwindClass(`TranslateX(${x})`, mappings);
+      const twClassY = getTailwindClass(`TranslateY(${y})`, mappings);
       return twClassX && twClassY ? `${twClassX} ${twClassY}` : className;
     },
   },
@@ -57,10 +57,10 @@ const specialCases = [
   },
   {
     matcher: /Bg\((.*)\)/,
-    replacement(className) {
+    replacement(className, mappings) {
       const match = className.match(this.matcher);
       const value = match[1];
-      const twClass = getTailwindClass(`Bgc(${value})`);
+      const twClass = getTailwindClass(`Bgc(${value})`, mappings);
       return twClass || className;
     },
   },
@@ -240,7 +240,7 @@ const getTailwindClass = (function main() {
     );
 
     if (specialCase) {
-      const twClass = specialCase.replacement(baseClass);
+      const twClass = specialCase.replacement(baseClass, mappings);
       return addBreakpointPseudoClass(twClass, breakpoint, pseudoClass);
     }
 
