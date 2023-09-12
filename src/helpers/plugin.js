@@ -1,9 +1,10 @@
 import path from 'path';
 
 function verifyPlugin(plugin) {
-  if (!plugin || !plugin.matcher || typeof plugin.replacement !== 'function') {
+  console.log('plugin', plugin);
+  if (!plugin || !plugin.name || typeof plugin.plugin !== 'function') {
     throw new Error(
-      'Invalid plugin valid plugin must have a matcher and a replacement function'
+      'Invalid plugin valid plugin must have a name and a plugin function'
     );
   }
 }

@@ -30,20 +30,16 @@ async function tranformFile(classes, code, plugins = [], mappings = {}) {
     uniqueClasses.forEach(([regex, className]) => {
       let replaced = false;
 
-      plugins.forEach((plugin) => {
-        if (plugin.matcher.test(className)) {
-          const transformedClass = plugin.replacement(className, mappings);
-          if (transformedClass) {
-            transformedClasses.push(
-              `<tr><td>${className}</td><td>${transformedClass}</td></tr>`
-            );
-            code = code.replace(regex, transformedClass);
-            classesTransformedCount++;
-            replaced = true;
-            return;
-          } else {
-            notTransformedClasses.push(className);
-          }
+      plugins.forEach(({ name, plugin }) => {
+        const transformedClass = plugin(className, mappings);
+        if (transformedClass) {
+          transformedClasses.push(
+            `<tr><td>${className}</td><td>${transformedClass}</td><td>from plugin: ${name} </td></tr>`
+          );
+          code = code.replace(regex, transformedClass);
+          classesTransformedCount++;
+          replaced = true;
+          return;
         }
       });
 
