@@ -50,7 +50,7 @@ function generateHTMLReport(
       
       <h4>Not transformed classes:</h4>
       <table class="changes-table">
-        ${_.uniq(value.notTransformedClasses).join('')}
+        ${_.uniq(value.notTransformedClasses).join(', ')}
       </table>`
           : ''
       }
