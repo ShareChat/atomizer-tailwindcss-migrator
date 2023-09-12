@@ -19,6 +19,16 @@ function createHTMLTableRow(data, idx) {
   </tr>`;
 }
 
+function createTableRow(data) {
+  return `
+  <tr>
+      <td>${data.from}</td>
+      <td>${data.to}</td>
+      <td>${data.count || 0}</td>
+      <td>${data.plugin || ''}</td>
+  </tr>`;
+}
+
 function generateHTMLReport(
   transformReport,
   totalAtomicClasses,
@@ -42,7 +52,15 @@ function generateHTMLReport(
       </div>
       <h4>Transformed classes:</h4>
       <table class="changes-table">
-        ${_.uniq(value.transformedClasses).join('')}
+        <tr>
+          <th>From</th>
+          <th>To</th>
+          <th>Count</th>
+          <th>Plugin</th>
+        </tr>
+        ${_.uniqBy(value.transformedClasses, 'from')
+          .map(createTableRow)
+          .join('')}
       </table>
       ${
         value.notTransformedClasses.length > 0

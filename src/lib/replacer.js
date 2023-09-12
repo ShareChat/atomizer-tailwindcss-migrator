@@ -33,9 +33,13 @@ async function tranformFile(classes, code, plugins = [], mappings = {}) {
       plugins.forEach(({ name, plugin }) => {
         const transformedClass = plugin(className, mappings);
         if (transformedClass) {
-          transformedClasses.push(
-            `<tr><td>${className}</td><td>${transformedClass}</td><td>from plugin: ${name} </td></tr>`
-          );
+          const count = code.match(regex)?.length;
+          transformedClasses.push({
+            from: className,
+            to: transformedClass,
+            count,
+            plugin: name,
+          });
           code = code.replace(regex, transformedClass);
           classesTransformedCount++;
           replaced = true;
@@ -50,7 +54,12 @@ async function tranformFile(classes, code, plugins = [], mappings = {}) {
       const tw = getTailwindClass(className, mappings);
 
       if (tw) {
-        transformedClasses.push(`<tr><td>${className}</td><td>${tw}</td></tr>`);
+        const count = code.match(regex)?.length;
+        transformedClasses.push({
+          from: className,
+          to: tw,
+          count,
+        });
         code = code.replace(regex, tw);
         classesTransformedCount++;
       } else {
