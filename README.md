@@ -2,6 +2,12 @@
 
 CLI tool to refactor atomizer codebases to tailwindcss
 
+## Installation
+
+```bash
+npm i -g https://github.com/mahendra790/atomizer-tailwindcss-migrator\#v0.0.1
+```
+
 ## Usage
 
 for help
