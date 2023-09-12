@@ -8,6 +8,7 @@ import tranformFile from './lib/replacer.js';
 import { globSync } from 'glob';
 import { extractClasses } from './helpers/index.js';
 import generateHTMLReport from './helpers/html.js';
+import loadPlugins from './helpers/plugin.js';
 
 const currentTime = performance.now();
 
@@ -24,6 +25,7 @@ program
     'stylesheet file to use for picking up atomizer classes'
   )
   .requiredOption('-t, --transform <globPattern>', 'files to transform')
+  .option('-p, --plugins <file>', 'plugins file to use for custom transforms')
   .option('-m, --mappings <file>', 'mappings file to use for custom variables')
   .option('-d, --dry-run', 'dry run to see the changes')
   .option('-no, --no-open', 'do not open the report file');
@@ -50,6 +52,12 @@ if (options.mappings) {
   mappingsFile = options.mappings;
 }
 
+let plugins = [];
+
+if (options.plugins) {
+  plugins = await loadPlugins(options.plugins);
+}
+
 const isDryRun = options.dryRun;
 
 async function main(styleFilePath, filePattern) {
@@ -70,7 +78,7 @@ async function main(styleFilePath, filePattern) {
       classesTransformedCount,
       transformedClasses,
       notTransformedClasses,
-    } = await tranformFile(allClasses, content, mappings);
+    } = await tranformFile(allClasses, content, plugins, mappings);
     if (!isDryRun) {
       await writeFile(file, code);
     }

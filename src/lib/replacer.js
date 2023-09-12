@@ -1,6 +1,6 @@
 import getTailwindClass from './converter.js';
 
-async function tranformFile(classes, code, mappings) {
+async function tranformFile(classes, code, plugins = [], mappings = {}) {
   let classesTransformedCount = 0;
   try {
     const uniqueClassesSet = new Set();
@@ -28,7 +28,31 @@ async function tranformFile(classes, code, mappings) {
     const notTransformedClasses = [];
 
     uniqueClasses.forEach(([regex, className]) => {
+      let replaced = false;
+
+      plugins.forEach((plugin) => {
+        if (plugin.matcher.test(className)) {
+          const transformedClass = plugin.replacement(className, mappings);
+          if (transformedClass) {
+            transformedClasses.push(
+              `<tr><td>${className}</td><td>${transformedClass}</td></tr>`
+            );
+            code = code.replace(regex, transformedClass);
+            classesTransformedCount++;
+            replaced = true;
+            return;
+          } else {
+            notTransformedClasses.push(className);
+          }
+        }
+      });
+
+      if (replaced) {
+        return;
+      }
+
       const tw = getTailwindClass(className, mappings);
+
       if (tw) {
         transformedClasses.push(`<tr><td>${className}</td><td>${tw}</td></tr>`);
         code = code.replace(regex, tw);
