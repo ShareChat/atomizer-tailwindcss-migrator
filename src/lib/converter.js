@@ -110,6 +110,21 @@ const specialCases = [
       return twClass || className;
     },
   },
+  {
+    matcher: /Bd(starts|ends|ts|bs)\(n\)/,
+    replacement(className) {
+      const match = className.match(this.matcher);
+      const value = match[1];
+      const mapping = {
+        starts: 'border-l-0',
+        ends: 'border-r-0',
+        ts: 'border-t-0',
+        bs: 'border-b-0',
+      };
+      const twClass = mapping[value];
+      return twClass || className;
+    },
+  },
 ];
 
 const transformers = [
