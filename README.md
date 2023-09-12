@@ -2,7 +2,7 @@
 
 CLI tool to refactor atomizer codebases to tailwindcss
 
-Usage
+## Usage
 
 for help
 
@@ -46,3 +46,28 @@ tw-mg -s src/styles/main.css -t "src/components/atoms/*.js" -d -no
 ```
 
 after running these a `transform-report.html` will be generated and opened in browser which will contain all the details.
+
+## Loading Plugins
+
+You can load plugins by passing `-p` or `--plugins` flag
+
+```bash
+tw-mg -s src/styles/main.css -t "src/components/atoms/*.js" -p "plugin.js"
+```
+
+## Writing Plugins
+
+Plugin file must export an array of plugins which will be loaded by the migrator.
+
+```js
+module.exports = [
+  {
+    name: 'plugin-name',
+    plugin: function (atomizer, mappings) {
+      // do something with atomizer
+      // return null in case you want to skip this plugin
+      return atomizer;
+    },
+  },
+];
+```
