@@ -34,6 +34,26 @@ function generateHTMLReport(
   totalAtomicClasses,
   totalTransformedClasses
 ) {
+  const allTransformedClasses = transformReport
+    .reduce((acc, value) => {
+      return [...acc, ...value.transformedClasses];
+    }, [])
+    .filter((v) => v.count);
+
+  const groupedTransformedClasses = _.groupBy(allTransformedClasses, 'from');
+
+  const transformedClasses = Object.keys(groupedTransformedClasses).map(
+    (key) => {
+      const value = groupedTransformedClasses[key];
+      return {
+        from: key,
+        to: value[0].to,
+        count: value.reduce((acc, v) => acc + v.count, 0),
+        plugin: value[0].plugin,
+      };
+    }
+  );
+
   const changeList = transformReport
     .filter((v) => v.atomicClassesCount > 0 && v.classesTransformedCount > 0)
     .map((value) => {
@@ -65,7 +85,7 @@ function generateHTMLReport(
       ${
         value.notTransformedClasses.length > 0
           ? `
-      
+  
       <h4>Not transformed classes:</h4>
       <table class="changes-table">
         ${_.uniq(value.notTransformedClasses).join(', ')}
@@ -164,6 +184,10 @@ function generateHTMLReport(
         .map(createHTMLTableRow)
         .join('')}
     </tbody>
+  </table>
+  <h3>Transformed classes:</h4>
+  <table class="changes-table">
+    ${transformedClasses.map(createTableRow).join('')}
   </table>
   <h3>Classes not transformed:</h3>
   <ul>
