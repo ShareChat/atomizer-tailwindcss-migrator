@@ -1,7 +1,6 @@
 import path from 'path';
 
 function verifyPlugin(plugin) {
-  console.log('plugin', plugin);
   if (!plugin || !plugin.name || typeof plugin.plugin !== 'function') {
     throw new Error(
       'Invalid plugin valid plugin must have a name and a plugin function'
