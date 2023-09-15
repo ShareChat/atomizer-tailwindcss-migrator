@@ -125,6 +125,12 @@ const specialCases = [
       return twClass || className;
     },
   },
+  {
+    matcher: /Trsp\(a\)/,
+    replacement() {
+      return 'transition-all';
+    },
+  },
 ];
 
 const transformers = [
