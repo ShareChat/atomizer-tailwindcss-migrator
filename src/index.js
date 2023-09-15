@@ -9,6 +9,11 @@ import { globSync } from 'glob';
 import { extractClasses } from './helpers/index.js';
 import generateHTMLReport from './helpers/html.js';
 import loadPlugins from './helpers/plugin.js';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+
+const packageJson = require('../package.json');
 
 const currentTime = performance.now();
 
@@ -17,7 +22,7 @@ const program = new Command();
 program
   .name('tailwind-migrator')
   .description('CLI to migrate files from atomizer to tailwindcss')
-  .version('0.8.1');
+  .version(packageJson.version);
 
 program
   .requiredOption(

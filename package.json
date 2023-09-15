@@ -1,6 +1,6 @@
 {
   "name": "tailwindcss-migrator",
-  "version": "1.0.1",
+  "version": "0.0.4",
   "description": "tool to migrate from atomizer to tailwindcss",
   "main": "index.js",
   "scripts": {
