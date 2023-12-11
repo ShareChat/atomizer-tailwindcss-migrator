@@ -1,5 +1,5 @@
 {
-  "name": "tailwindcss-migrator",
+  "name": "@mohalla-tech/atomizer-tailwindcss-migrator",
   "version": "0.0.4",
   "description": "tool to migrate from atomizer to tailwindcss",
   "main": "index.js",
