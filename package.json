@@ -1,7 +1,7 @@
 {
   "name": "@mohalla-tech/atomizer-tailwindcss-migrator",
   "version": "0.0.7",
-  "description": "tool to migrate from atomizer to tailwindcss",
+  "description": "A CLI tool to migrate from atomizer to tailwindcss",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +10,7 @@
     "tw-mg": "./src/index.js"
   },
   "author": "mahendra790",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "commander": "^11.0.0",
     "glob": "^10.3.4",
