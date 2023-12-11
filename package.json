@@ -9,7 +9,7 @@
   "bin": {
     "tw-mg": "./src/index.js"
   },
-  "author": "",
+  "author": "mahendra790",
   "license": "ISC",
   "dependencies": {
     "commander": "^11.0.0",
@@ -23,5 +23,12 @@
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShareChat/atomizer-tailwindcss-migrator"
   }
 }
