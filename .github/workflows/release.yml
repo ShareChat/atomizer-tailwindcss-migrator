@@ -26,7 +26,10 @@ jobs:
       - name: install dependencies
         run: pnpm install
       - name: save new version
-        run: echo "version=cat package.json | jq -r '.version'" >> "$GITHUB_ENV"
+        run: |
+          echo "version=$(cat package.json | jq -r '.version')" >> "$GITHUB_ENV"
+          echo "version=$version"
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
