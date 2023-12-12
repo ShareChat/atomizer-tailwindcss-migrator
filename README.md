@@ -1,6 +1,18 @@
-# atomizer-tailwindcss-migrator
+# Atomizer Tailwindcss Migrator
 
-CLI tool to refactor atomizer codebases to tailwindcss
+CLI tool to refactor [atomizer](https://acss.io/) codebases to [tailwindcss](https://tailwindcss.com/)
+
+![Screen Recording 2023-12-12 at 3 15 36 PM](https://github.com/ShareChat/atomizer-tailwindcss-migrator/assets/141409866/c1af2ba5-5734-48e5-b6a4-780504be10cd)
+
+
+## Features
+
+- [x] Transform atomizer classes to tailwindcss classes
+- [x] Works with jsx, tsx, svelte, vue, html files
+- [x] Generate report of all the changes
+- [x] Dry run mode
+- [x] Customizable mappings - you can pass json file with mappings from atomizer classes to tailwindcss classes
+- [x] Customizable plugins - you can pass js file with plugins which will be loaded by the migrator
 
 ## Installation
 
