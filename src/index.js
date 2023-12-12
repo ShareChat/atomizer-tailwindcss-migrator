@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-import path from 'path';
-import open from 'open';
-import { readFile, writeFile } from 'fs/promises';
 import { Command } from 'commander';
-import tranformFile from './lib/replacer.js';
+import { readFile, writeFile } from 'fs/promises';
 import { globSync } from 'glob';
-import { extractClasses } from './helpers/index.js';
-import generateHTMLReport from './helpers/html.js';
-import loadPlugins from './helpers/plugin.js';
 import { createRequire } from 'node:module';
+import open from 'open';
+import path from 'path';
+import generateHTMLReport from './helpers/html.js';
+import { extractClasses } from './helpers/index.js';
+import loadPlugins from './helpers/plugin.js';
+import tranformFile from './lib/replacer.js';
 
 const require = createRequire(import.meta.url);
 
@@ -29,7 +29,7 @@ program
     '-s, --style <file>',
     'stylesheet file to use for picking up atomizer classes'
   )
-  .requiredOption('-t, --transform <globPattern>', 'files to transform')
+  .requiredOption('-t, --target <globPattern>', 'files to transform')
   .option('-p, --plugins <file>', 'plugins file to use for custom transforms')
   .option('-m, --mappings <file>', 'mappings file to use for custom variables')
   .option('-d, --dry-run', 'dry run to see the changes')
@@ -49,8 +49,8 @@ if (options.style) {
   styleFile = options.style;
 }
 
-if (options.transform) {
-  filePattern = options.transform;
+if (options.target) {
+  filePattern = options.target;
 }
 
 if (options.mappings) {

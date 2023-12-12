@@ -4,7 +4,6 @@ CLI tool to refactor [atomizer](https://acss.io/) codebases to [tailwindcss](htt
 
 ![Screen Recording 2023-12-12 at 3 15 36 PM](https://github.com/ShareChat/atomizer-tailwindcss-migrator/assets/141409866/c1af2ba5-5734-48e5-b6a4-780504be10cd)
 
-
 ## Features
 
 - Transform atomizer classes to tailwindcss classes
@@ -34,71 +33,121 @@ pnpm
 pnpm add @mohalla-tech/atomizer-tailwindcss-migrator -g
 ```
 
-## Usage
+Now you can run the migrator using `tw-mg` command
 
-for help
+## Options
 
-```bash
-tw-mg -h
-```
+### -h, --help
 
-Lets say we have our atomizer css class at path `src/styles/main.css` and we want to transform all components under `src/components/atoms/`
+Show help
 
-```bash
-tw-mg -s src/styles/main.css -t "src/components/atoms/*.js"
-```
+### -s, --style - required
 
-For dry run -- it will only generate report and open it
+Path to atomizer generated css file, it contains all the generated classes
 
-```bash
-tw-mg -s src/styles/main.css -t "src/components/atoms/*.js" --dry-run
-```
+### -t, --target <glob-pattern> - required
 
-If you want to replace atomizer variables name with other names in tailwind you can pass json file with mapping from atomic var to tailwind var
+Target files to transform, supports glob pattern
 
-Eg: mappings.json
+### -d, --dry-run
+
+Dry run mode, will only generate report and open it
+
+### -no, --no-open
+
+Do not open report in browser
+
+### -m, --mappings
+
+Path to json file with mappings from atomizer classes to tailwindcss classes, for example we may want to replace `$fzTitle` variable with `title` in tailwindcss variable so any class like `Fz($fzTitle)` will be replaced with `text-title`
+
+Ex:
 
 ```json
 {
-  "fzTitle": "title",
-  "$someLongCamelCase": "short-snake-case"
+  "$fzTitle": "title"
 }
 ```
 
-it will replace var `fzTitle` with `title` and so on.
+### -p, --plugins
+
+Path to js file with plugins which will be loaded by the migrator this can be helpful if you want to do some custom transformation
+for help on writing plugins see [Writing Plugins](#writing-plugins)
+
+## Usage
+
+if we want to run without any mappings or plugins
 
 ```bash
-tw-mg -s src/styles/main.css -t "src/components/atoms/*.js" -m 'mappings.json' -d
+tw-mg -s ./path/to/atomizer.css -t ./path/to/target/files
 ```
 
-If you do not want to open the report by default
+with mappings
 
 ```bash
-tw-mg -s src/styles/main.css -t "src/components/atoms/*.js" -d -no
+tw-mg -s ./path/to/atomizer.css -t ./path/to/target/files -m ./path/to/mappings.json
 ```
 
-after running these a `transform-report.html` will be generated and opened in browser which will contain all the details.
-
-## Loading Plugins
-
-You can load plugins by passing `-p` or `--plugins` flag
+with plugins
 
 ```bash
-tw-mg -s src/styles/main.css -t "src/components/atoms/*.js" -p "plugin.js"
+tw-mg -s ./path/to/atomizer.css -t ./path/to/target/files -p ./path/to/plugins.js
+```
+
+with mappings and plugins
+
+```bash
+tw-mg -s ./path/to/atomizer.css -t ./path/to/target/files -m ./path/to/mappings.json -p ./path/to/plugins.js
+```
+
+dry run mode - it will only generate report and open it
+
+```bash
+tw-mg -s ./path/to/atomizer.css -t ./path/to/target/files -d
+```
+
+## Example
+
+we have a file `/src/styles/main.css` with atomizer classes
+
+```css
+.Fz($fzTitle) {
+  font-size: $fzTitle;
+}
+
+.D\(f\) {
+  display: flex;
+}
+
+.Bgc\(c\) {
+  background-color: $c;
+}
+```
+
+we want to transform all the atomizer classes to tailwindcss classes within `/src/components` directory
+
+```bash
+tw-mg -s ./src/styles/main.css -t ./src/components/**/*.jsx -d
+```
+
+this will generate a report and open it in browser, you can then review the changes and apply them by removing `-d` flag
+
+```bash
+tw-mg -s ./src/styles/main.css -t ./src/components/**/*.jsx
 ```
 
 ## Writing Plugins
 
-Plugin file must export an array of plugins which will be loaded by the migrator.
+Plugin file must export an array of plugins which will be loaded by the migrator, plugins must be an object with `name` and `plugin` keys where `name` is the name of the plugin and `plugin` is a function which will be called for each atomizer class with `className` and `mappings` as arguments, `className` is the atomizer class and `mappings` is the mappings object passed to the migrator
 
 ```js
 module.exports = [
   {
     name: 'plugin-name',
-    plugin: function (atomizer, mappings) {
+    plugin: function (className, mappings) {
       // do something with atomizer
       // return null in case you want to skip this plugin
-      return atomizer;
+      return newClassName;
     },
   },
 ];
