@@ -1,5 +1,13 @@
 # @mohalla-tech/atomizer-tailwindcss-migrator
 
+## 1.0.0
+
+### Major Changes
+
+- 5ba54eb: Major release
+
+  this is stable release, with all the features implemented.
+
 ## 0.0.9
 
 ### Patch Changes
