@@ -13,6 +13,15 @@
   },
   "author": "mahendra790",
   "license": "MIT",
+  "keywords": [
+    "atomizer",
+    "tailwindcss",
+    "javascript",
+    "css",
+    "refactor",
+    "migrate",
+    "automation"
+  ],
   "dependencies": {
     "commander": "^11.0.0",
     "glob": "^10.3.4",
