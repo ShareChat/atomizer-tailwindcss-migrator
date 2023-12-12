@@ -6,7 +6,8 @@
   "scripts": {
     "ci:publish": "pnpm publish --no-git-checks --access public",
     "lint": "eslint . --ext .js",
-    "ci:release": "changeset publish"
+    "ci:release": "changeset publish",
+    "changeset": "changeset"
   },
   "bin": {
     "tw-mg": "./src/index.js"
