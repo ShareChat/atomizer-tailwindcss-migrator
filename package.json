@@ -1,6 +1,6 @@
 {
   "name": "@mohalla-tech/atomizer-tailwindcss-migrator",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A CLI tool to migrate from atomizer to tailwindcss",
   "main": "index.js",
   "scripts": {
