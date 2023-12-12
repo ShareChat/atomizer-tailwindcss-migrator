@@ -7,30 +7,30 @@ env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
 jobs:
-  version:
+  release:
+    if: github.repository == 'ShareChat/atomizer-tailwindcss-migrator'
     timeout-minutes: 15
+    name: Release
     runs-on: ubuntu-latest
     steps:
       - name: checkout code repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - uses: pnpm/action-setup@v2.4.0
       - name: setup node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: install pnpm
-        run: npm i pnpm@latest -g
-      - name: setup pnpm config
-        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+          cache: pnpm
       - name: install dependencies
         run: pnpm install
-      - name: create and publish versions
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
         uses: changesets/action@v1
         with:
-          version: pnpm ci:version
-          commit: 'chore: update versions'
-          title: 'chore: update versions'
-          publish: pnpm ci:publish
+          publish: pnpm changeset:release
+          version: pnpm changeset:version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
