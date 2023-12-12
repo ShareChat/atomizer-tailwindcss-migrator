@@ -4,7 +4,8 @@
   "description": "A CLI tool to migrate from atomizer to tailwindcss",
   "main": "index.js",
   "scripts": {
-    "ci:publish": "pnpm publish --no-git-checks --access public"
+    "ci:publish": "pnpm publish --no-git-checks --access public",
+    "lint": "eslint . --ext .js"
   },
   "bin": {
     "tw-mg": "./src/index.js"
