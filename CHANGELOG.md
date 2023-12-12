@@ -1,5 +1,11 @@
 # @mohalla-tech/atomizer-tailwindcss-migrator
 
+## 1.0.1
+
+### Patch Changes
+
+- 0d08638: Update README and option names
+
 ## 1.0.0
 
 ### Major Changes
