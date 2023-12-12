@@ -26,7 +26,7 @@ program
 
 program
   .requiredOption(
-    '-s, --style <file> ',
+    '-s, --style <file>',
     'stylesheet file to use for picking up atomizer classes'
   )
   .requiredOption('-t, --transform <globPattern>', 'files to transform')
