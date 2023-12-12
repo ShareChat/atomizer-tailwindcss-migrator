@@ -1,5 +1,12 @@
 # @mohalla-tech/atomizer-tailwindcss-migrator
 
+## 1.0.1
+
+### Patch Changes
+
+- 0378406: update release.yml
+- f52942f: update release.yml
+
 ## 1.0.0
 
 ### Major Changes
