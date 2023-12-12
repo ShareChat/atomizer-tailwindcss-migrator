@@ -33,8 +33,8 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          commit: Version Packages ${env.version}
-          title: Release ${env.version}
+          commit: Version Packages ${{ env.version }}
+          title: Release ${{ env.version }}
           publish: pnpm ci:release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
