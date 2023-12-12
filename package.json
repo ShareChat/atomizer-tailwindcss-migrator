@@ -4,7 +4,7 @@
   "description": "A CLI tool to migrate from atomizer to tailwindcss",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "ci:publish": "pnpm publish -r"
   },
   "bin": {
     "tw-mg": "./src/index.js"
@@ -19,6 +19,7 @@
   },
   "type": "module",
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "eslint": "^8.48.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^9.0.0",
