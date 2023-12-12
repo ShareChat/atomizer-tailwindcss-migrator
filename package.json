@@ -32,5 +32,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ShareChat/atomizer-tailwindcss-migrator"
-  }
+  },
+  "packageManager": "pnpm@8.10.2"
 }
