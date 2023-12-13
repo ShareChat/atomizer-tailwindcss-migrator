@@ -1,5 +1,11 @@
 # @mohalla-tech/atomizer-tailwindcss-migrator
 
+## 1.0.2
+
+### Patch Changes
+
+- ce0c92f: Update package.json remove unused scripts
+
 ## 1.0.1
 
 ### Patch Changes
